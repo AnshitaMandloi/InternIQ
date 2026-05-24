@@ -1,0 +1,268 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InternIQ — Find Internships. Build Smarter Resumes.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-wrap">
+        <svg class="logo-icon-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="17" fill="currentColor" opacity="0.15"/>
+          <path d="M18 11L27 15.5L18 20L9 15.5Z" fill="currentColor"/>
+          <path d="M13 17.5V23C13 24.1 15.2 25 18 25C20.8 25 23 24.1 23 23V17.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <line x1="27" y1="15.5" x2="27" y2="21.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="27" cy="23" r="1.8" fill="currentColor"/>
+        </svg>
+        <span class="logo-intern">Intern</span><span class="logo-iq">IQ</span>
+      </span>
+    </a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button></li>
+      <li><a href="login.html" class="btn-outline-sm">Login</a></li>
+      <li><a href="register.html" class="btn-primary-sm">Get Started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-shape shape-1"></div>
+  <div class="hero-shape shape-2"></div>
+  <div class="container hero-layout">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        AI-Powered · Built for Students
+      </div>
+      <h1 class="hero-title display">
+        Find Internships.<br/>
+        <em>Build Smarter</em><br/>
+        Resumes.
+      </h1>
+      <p class="hero-subtitle">
+        InternIQ supercharges your internship hunt with intelligent search, real-time application tracking, and an AI resume scorer — all in one place.
+      </p>
+      <div class="hero-cta-group">
+        <a href="register.html" class="btn-primary btn-lg">
+          <span>Get Started Free
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+        <a href="login.html" class="btn-ghost btn-lg">Login to Dashboard</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">50K+</span><span class="stat-label">Internships</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">12K+</span><span class="stat-label">Students</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">92%</span><span class="stat-label">Offer Rate</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="dashboard-mockup">
+        <div class="mockup-header">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="mockup-title">INTERNIQ DASHBOARD</span>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-card">
+            <div class="mc-icon">🏢</div>
+            <div class="mc-info">
+              <div class="mc-company">Google</div>
+              <div class="mc-role">Software Engineer Intern</div>
+              <span class="badge badge-blue">Applied</span>
+            </div>
+          </div>
+          <div class="mockup-card">
+            <div class="mc-icon">🔥</div>
+            <div class="mc-info">
+              <div class="mc-company">Meta</div>
+              <div class="mc-role">Product Management Intern</div>
+              <span class="badge badge-orange">Interview</span>
+            </div>
+          </div>
+          <div class="mockup-score">
+            <div class="score-label">AI Resume Score</div>
+            <div class="score-bar-wrap">
+              <div class="score-bar" id="heroScoreBar"></div>
+            </div>
+            <div class="score-sub">Matched 14/17 skills ✅</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">Everything You Need</div>
+      <h2 class="section-title display">Built for the Modern<br/><span class="gradient-text">Job Seeker</span></h2>
+      <p class="section-subtitle">From searching to signing — InternIQ handles every step of your internship journey.</p>
+    </div>
+    <div class="features-bento">
+
+      <div class="bento-card bento-wide anim-target">
+        <div class="feature-icon-wrap">🔍</div>
+        <h3>Internship Search</h3>
+        <p>Search thousands of real-time internships by role, location, and company via Google Jobs API. Filters for stipend, duration, and remote preference built in.</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:18px;">
+          <span class="feature-tag">50K+ real listings</span>
+          <div class="bento-stat-row" style="padding-top:0;margin-top:0;">
+            <div class="bento-stat"><div class="bento-stat-num">10s</div><div class="bento-stat-lbl">Avg search</div></div>
+            <div class="bento-stat"><div class="bento-stat-num">∞</div><div class="bento-stat-lbl">Queries</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bento-card bento-tall anim-target">
+        <div class="feature-icon-wrap">🤖</div>
+        <h3>AI Resume Scorer</h3>
+        <p>Paste any job description. Our AI instantly scores your resume compatibility, highlighting matched and missing skills so you can tailor every application.</p>
+        <div style="margin-top:16px;">
+          <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+            <div style="font-size:.72rem;font-family:'Cabinet Grotesk',sans-serif;color:var(--accent);font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Match Score</div>
+            <div style="height:6px;background:var(--bg-2);border-radius:50px;overflow:hidden;">
+              <div style="height:100%;width:78%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:50px;"></div>
+            </div>
+            <div style="font-size:.68rem;color:var(--muted);margin-top:5px;">78% match · 14 skills found</div>
+          </div>
+        </div>
+        <span class="feature-tag" style="margin-top:auto;display:inline-block;margin-top:18px;">Powered by OpenAI</span>
+      </div>
+
+      <div class="bento-card anim-target">
+        <div class="feature-icon-wrap">📋</div>
+        <h3>Application Tracker</h3>
+        <p>Track every application across SAVED → APPLIED → INTERVIEW → OFFER → REJECTED. Never lose track again.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;">
+          <span class="badge badge-grey">Saved</span>
+          <span class="badge badge-blue">Applied</span>
+          <span class="badge badge-orange">Interview</span>
+          <span class="badge badge-green">Offer</span>
+        </div>
+      </div>
+
+      <div class="bento-card anim-target">
+        <div class="feature-icon-wrap">⏰</div>
+        <h3>Deadline Reminders</h3>
+        <p>Set reminders for application deadlines. Get email alerts 2 days before so you never miss an opportunity.</p>
+        <span class="feature-tag" style="margin-top:16px;display:inline-block;">Smart email alerts</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">Simple Process</div>
+      <h2 class="section-title display">Get Started in <span class="gradient-text">3 Steps</span></h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step anim-target">
+        <div class="step-num">01</div>
+        <h3>Create Your Profile</h3>
+        <p>Sign up with your college, branch, year and skills. InternIQ personalizes everything.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step anim-target">
+        <div class="step-num">02</div>
+        <h3>Search &amp; Apply</h3>
+        <p>Browse curated internships from Google Jobs, save favorites, and apply directly.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step anim-target">
+        <div class="step-num">03</div>
+        <h3>Score Your Resume</h3>
+        <p>Use AI scorer to tailor your resume for every JD. Maximize your match percentage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-blob"></div>
+      <h2 class="display">Ready to Land Your<br/><span class="gradient-text">Dream Internship?</span></h2>
+      <p>Join 12,000+ students already using InternIQ to accelerate their careers.</p>
+      <a href="register.html" class="btn-primary btn-lg"><span>Start for Free — No Credit Card Needed</span></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="logo-wrap">
+        <svg class="logo-icon-svg" style="width:28px;height:28px;" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="17" fill="currentColor" opacity="0.15"/>
+          <path d="M18 11L27 15.5L18 20L9 15.5Z" fill="currentColor"/>
+          <path d="M13 17.5V23C13 24.1 15.2 25 18 25C20.8 25 23 24.1 23 23V17.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="logo-intern" style="font-size:1rem;">Intern</span><span class="logo-iq" style="font-size:1rem;">IQ</span>
+      </span>
+      <p>Smart internship tracking for college students.</p>
+    </div>
+    <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
+    <p class="footer-copy">© 2026 InternIQ. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // ── Navbar scroll ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+
+  // ── Hamburger ──
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+
+  // ── Scroll animations ──
+  const observer = new IntersectionObserver(entries =>
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.anim-target, .step').forEach(el => observer.observe(el));
+
+  // ── Hero score bar ──
+  setTimeout(() => {
+    const b = document.getElementById('heroScoreBar');
+    if (b) b.style.width = '82%';
+  }, 700);
+
+  // ── Theme toggle ──
+  const themeToggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  const saved = localStorage.getItem('interniq_theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  themeToggle.textContent = saved === 'dark' ? '☀️' : '🌙';
+
+  themeToggle.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('interniq_theme', next);
+    themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+  });
+</script>
+</body>
+</html>

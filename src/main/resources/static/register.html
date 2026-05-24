@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — InternIQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/styles.css"/>
+  <style>
+    .page-theme-toggle {
+      position: fixed; top: 20px; right: 20px; z-index: 200;
+    }
+    /* Decorative background blobs */
+    .register-page::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 15% 30%, var(--accent-glow), transparent 60%),
+        radial-gradient(ellipse 50% 50% at 85% 70%, var(--teal-light), transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-theme-toggle">
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+</div>
+
+<div class="register-page">
+  <div class="register-card">
+    <div class="auth-logo">
+      <span class="logo-wrap">
+        <svg class="logo-icon-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="17" fill="currentColor" opacity="0.15"/>
+          <path d="M18 11L27 15.5L18 20L9 15.5Z" fill="currentColor"/>
+          <path d="M13 17.5V23C13 24.1 15.2 25 18 25C20.8 25 23 24.1 23 23V17.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <line x1="27" y1="15.5" x2="27" y2="21.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="27" cy="23" r="1.8" fill="currentColor"/>
+        </svg>
+        <span class="logo-intern">Intern</span><span class="logo-iq">IQ</span>
+      </span>
+    </div>
+
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-step active" id="ps1"></div>
+      <div class="progress-step" id="ps2"></div>
+      <div class="progress-step" id="ps3"></div>
+    </div>
+
+    <h1 class="auth-title" id="stepTitle">Create Your Account</h1>
+    <p class="auth-sub" id="stepSub">Join thousands of students finding their dream internships.</p>
+
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="success-msg" id="successMsg"></div>
+
+    <form id="registerForm" novalidate>
+
+      <!-- Step 1: Basic info -->
+      <div id="step1">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Ansh Sharma" required/>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="ansh@college.edu" required/>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Min. 8 characters" required/>
+        </div>
+        <button type="button" class="btn-submit" id="nextBtn1" onclick="goStep2()">
+          Continue →
+        </button>
+      </div>
+
+      <!-- Step 2: College info -->
+      <div id="step2" style="display:none;">
+        <div class="form-group">
+          <label for="college">College / University</label>
+          <input type="text" id="college" placeholder="RGPV Bhopal"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="branch">Branch</label>
+            <input type="text" id="branch" placeholder="Computer Science"/>
+          </div>
+          <div class="form-group">
+            <label for="year">Year</label>
+            <select id="year">
+              <option value="">Select</option>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+              <option value="4">4th Year</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button type="button" class="btn-ghost" style="flex:1;padding:13px;font-size:.875rem;" onclick="goStep1()">← Back</button>
+          <button type="button" class="btn-submit" style="flex:2;" onclick="goStep3()">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Review & submit -->
+      <div id="step3" style="display:none;">
+        <div style="text-align:center;padding:16px 0 24px;">
+          <div style="font-size:2.8rem;margin-bottom:14px;">🚀</div>
+          <h3 style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.01em;">You're all set!</h3>
+          <p style="color:var(--muted);font-size:.875rem;margin-bottom:24px;">Review your details and create your account.</p>
+          <div id="reviewBox" style="background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:left;margin-bottom:24px;font-size:.85rem;"></div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button type="button" class="btn-ghost" style="flex:1;padding:13px;font-size:.875rem;" onclick="goStep2()">← Back</button>
+          <button type="submit" class="btn-submit" style="flex:2;" id="submitBtn">
+            <span id="btnText">Create Account</span>
+            <span class="spinner" id="spinner" style="display:none;"></span>
+          </button>
+        </div>
+      </div>
+
+    </form>
+    <p class="auth-footer">Already have an account? <a href="login.html">Sign In →</a></p>
+  </div>
+</div>
+
+<script>
+  // Theme
+  const html = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('interniq_theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  themeToggle.textContent = saved === 'dark' ? '☀️' : '🌙';
+  themeToggle.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('interniq_theme', next);
+    themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+  });
+
+  // Form logic
+  const errorMsg = document.getElementById('errorMsg');
+  const successMsg = document.getElementById('successMsg');
+
+  function showError(msg) {
+    errorMsg.textContent = msg; errorMsg.classList.add('show');
+    successMsg.classList.remove('show');
+  }
+  function setProgress(n) {
+    for (let i = 1; i <= 3; i++)
+      document.getElementById('ps' + i).classList.toggle('active', i <= n);
+  }
+
+  function goStep2() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const pw = document.getElementById('password').value;
+    if (!name || !email || !pw) { showError('Please fill in all fields.'); return; }
+    if (pw.length < 8) { showError('Password must be at least 8 characters.'); return; }
+    errorMsg.classList.remove('show');
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+    document.getElementById('stepTitle').textContent = 'Your College';
+    document.getElementById('stepSub').textContent = 'Help us personalize your experience.';
+    setProgress(2);
+  }
+
+  function goStep1() {
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step1').style.display = 'block';
+    document.getElementById('stepTitle').textContent = 'Create Your Account';
+    document.getElementById('stepSub').textContent = 'Join thousands of students finding their dream internships.';
+    setProgress(1);
+  }
+
+  function goStep3() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const college = document.getElementById('college').value.trim();
+    const branch = document.getElementById('branch').value.trim();
+    const year = document.getElementById('year').value;
+    document.getElementById('reviewBox').innerHTML = `
+      <div style="display:grid;gap:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;">Name</span><span style="font-weight:600;">${esc(name)}</span></div>
+        <div style="border-top:1px solid var(--border);"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;">Email</span><span style="font-weight:600;">${esc(email)}</span></div>
+        ${college ? `<div style="border-top:1px solid var(--border);"></div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;">College</span><span style="font-weight:600;">${esc(college)}</span></div>` : ''}
+        ${branch ? `<div style="border-top:1px solid var(--border);"></div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;">Branch</span><span style="font-weight:600;">${esc(branch)}</span></div>` : ''}
+        ${year ? `<div style="border-top:1px solid var(--border);"></div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;">Year</span><span style="font-weight:600;">Year ${year}</span></div>` : ''}
+      </div>`;
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3').style.display = 'block';
+    document.getElementById('stepTitle').textContent = 'Almost There!';
+    document.getElementById('stepSub').textContent = 'Review and submit your profile.';
+    setProgress(3);
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const spinner = document.getElementById('spinner');
+    submitBtn.disabled = true; btnText.textContent = 'Creating Account…'; spinner.style.display = 'inline-block';
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const college = document.getElementById('college').value.trim();
+    const branch = document.getElementById('branch').value.trim();
+    const year = document.getElementById('year').value;
+    try {
+      const res = await fetch('http://localhost:8080/api/v1/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, college, branch, year: year ? parseInt(year) : null })
+      });
+      const data = await res.json();
+      if (res.ok && data.token) {
+        localStorage.setItem('interniq_token', data.token);
+        localStorage.setItem('interniq_user', JSON.stringify({ name, email, college, branch, year }));
+        successMsg.textContent = 'Account created! Redirecting…';
+        successMsg.classList.add('show');
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
+      } else {
+        showError(data.message || data.error || 'Registration failed.');
+      }
+    } catch(err) {
+      showError('Cannot reach server. Make sure the backend is running on port 8080.');
+    } finally {
+      submitBtn.disabled = false; btnText.textContent = 'Create Account'; spinner.style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>

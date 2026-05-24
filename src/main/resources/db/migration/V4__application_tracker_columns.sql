@@ -1,0 +1,17 @@
+-- V4__application_tracker_columns.sql
+
+ALTER TABLE applications
+ADD COLUMN notes TEXT NULL;
+
+ALTER TABLE applications
+ADD COLUMN deadline DATETIME NULL;
+
+ALTER TABLE applications
+ADD COLUMN updated_at DATETIME NULL;
+
+ALTER TABLE applications
+ADD COLUMN applied_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE applications
+MODIFY COLUMN status ENUM('SAVED','APPLIED','INTERVIEW','OFFER','REJECTED')
+NOT NULL DEFAULT 'SAVED';

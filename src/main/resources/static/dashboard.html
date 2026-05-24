@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InternIQ — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/styles.css"/>
+  <style>
+    /* ── Dashboard-specific overrides ── */
+    body { display: flex; flex-direction: column; }
+
+    /* Card grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    /* Listing card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px; padding: 20px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: all 0.25s; animation: fadeUp .3s ease both;
+      box-shadow: var(--card-shadow);
+    }
+    .card:hover { border-color: var(--border-hi); transform: translateY(-3px); box-shadow: var(--card-shadow-hover); }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .card-company {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent);
+      font-family: 'Cabinet Grotesk', sans-serif;
+    }
+    .card-source {
+      font-size: 0.68rem;
+      background: var(--surface-2); border: 1px solid var(--border);
+      color: var(--muted); padding: 2px 8px; border-radius: 20px; white-space: nowrap;
+      font-family: 'DM Mono', monospace;
+    }
+    .card-title {
+      font-family: 'Fraunces', serif; font-size: 1rem;
+      font-weight: 700; line-height: 1.3; color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .card-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .meta-chip {
+      font-size: 0.72rem; color: var(--muted);
+      background: var(--surface-2); border: 1px solid var(--border);
+      padding: 3px 10px; border-radius: 20px;
+    }
+    .card-desc {
+      font-size: 0.8rem; color: var(--muted); line-height: 1.55;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-actions { display: flex; gap: 8px; margin-top: auto; }
+
+    .btn-apply-card {
+      flex: 1; padding: 9px 0; border-radius: var(--radius-pill);
+      background: var(--accent);
+      border: none; color: #fff; font-weight: 700; font-size: 0.82rem;
+      cursor: pointer; font-family: 'Cabinet Grotesk', sans-serif;
+      transition: all 0.2s; letter-spacing: 0.01em;
+      box-shadow: 0 3px 12px var(--accent-glow);
+    }
+    .btn-apply-card:hover { background: var(--accent-2); }
+
+    .btn-save {
+      padding: 9px 16px; border-radius: var(--radius-pill);
+      background: transparent;
+      border: 1.5px solid var(--border); color: var(--teal);
+      font-weight: 600; font-size: 0.82rem; cursor: pointer;
+      font-family: 'Cabinet Grotesk', sans-serif; transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-save:hover { background: var(--teal-light); border-color: var(--teal); }
+    .btn-save.saved {
+      border-color: var(--teal);
+      background: var(--teal-light);
+      cursor: default;
+    }
+
+    /* Tracker card */
+    .tracker-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px; padding: 18px 20px;
+      display: flex; flex-direction: column; gap: 10px;
+      animation: fadeUp .3s ease both;
+      transition: all 0.2s;
+      box-shadow: var(--card-shadow);
+    }
+    .tracker-card:hover { border-color: var(--border-hi); box-shadow: var(--card-shadow-hover); }
+
+    .tracker-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .tracker-company {
+      font-size: 0.72rem; font-weight: 700; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      font-family: 'Cabinet Grotesk', sans-serif;
+    }
+    .tracker-title {
+      font-family: 'Fraunces', serif; font-size: 0.95rem;
+      font-weight: 700; letter-spacing: -0.01em;
+    }
+
+    .status-select {
+      background: var(--surface-2); border: 1.5px solid var(--border);
+      color: var(--text); font-family: 'Cabinet Grotesk', sans-serif;
+      font-size: 0.78rem; padding: 5px 10px; border-radius: 20px;
+      cursor: pointer; outline: none; transition: all 0.2s;
+    }
+    .status-select:focus { border-color: var(--accent); }
+    .status-select option { background: var(--surface); }
+
+    .status-SAVED     { border-color: var(--border-hi); color: var(--muted); }
+    .status-APPLIED   { border-color: rgba(59,130,246,.4); color: #3b82f6; }
+    .status-INTERVIEW { border-color: rgba(234,88,12,.4); color: var(--accent); }
+    .status-OFFER     { border-color: rgba(26,122,110,.4); color: var(--teal); }
+    .status-REJECTED  { border-color: rgba(239,68,68,.4); color: #ef4444; }
+
+    .tracker-footer { display: flex; justify-content: space-between; align-items: center; }
+    .tracker-date { font-size: 0.72rem; color: var(--muted); }
+
+    .btn-delete {
+      background: transparent; border: none;
+      color: var(--muted); font-size: 0.75rem; cursor: pointer;
+      padding: 4px 10px; border-radius: 8px; transition: all 0.2s;
+      font-family: 'Cabinet Grotesk', sans-serif;
+    }
+    .btn-delete:hover { color: #ef4444; background: rgba(239,68,68,.08); }
+
+    .btn-open-link {
+      background: transparent; border: none;
+      color: var(--accent); font-size: 0.75rem; cursor: pointer;
+      padding: 4px 10px; border-radius: 8px; transition: all 0.2s;
+      font-family: 'Cabinet Grotesk', sans-serif; text-decoration: none;
+    }
+    .btn-open-link:hover { background: var(--accent-glow); }
+
+    /* Empty state */
+    .state-empty {
+      grid-column: 1/-1; text-align: center;
+      padding: 60px 20px; color: var(--muted);
+    }
+    .state-empty .icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5; }
+    .state-empty p { font-size: 0.9rem; }
+
+    /* Skeleton */
+    .skeleton {
+      background: linear-gradient(
+        90deg,
+        var(--surface) 25%,
+        var(--surface-2) 50%,
+        var(--surface) 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px; height: 14px;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+
+    /* Search wrap (original dashboard style) */
+    .search-wrap {
+      display: flex; gap: 10px; margin-bottom: 28px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius-pill); padding: 8px 8px 8px 16px;
+      transition: border-color .2s; box-shadow: var(--card-shadow);
+    }
+    .search-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .search-wrap input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--text); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.9rem;
+    }
+    .search-wrap input::placeholder { color: var(--muted-2); }
+    .search-wrap select {
+      background: transparent; border: none; outline: none;
+      color: var(--muted); font-family: 'Cabinet Grotesk', sans-serif; font-size: 0.85rem;
+      cursor: pointer; padding: 0 8px;
+    }
+    .search-wrap select option { background: var(--surface); color: var(--text); }
+    .btn-search {
+      background: var(--accent);
+      border: none; color: #fff; font-weight: 700; font-size: 0.85rem;
+      padding: 9px 22px; border-radius: var(--radius-pill); cursor: pointer;
+      font-family: 'Cabinet Grotesk', sans-serif; transition: all .2s;
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+    .btn-search:hover { background: var(--accent-2); }
+    .btn-search:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Section header */
+    .section-header-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .section-title-sm {
+      font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 700;
+      letter-spacing: -0.01em; color: var(--text);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    }
+    .count-badge {
+      font-size: 0.72rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 2px 10px; border-radius: 20px; font-weight: 600;
+      font-family: 'Cabinet Grotesk', sans-serif;
+    }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; margin-bottom: 28px; }
+    .tab {
+      padding: 8px 20px; border-radius: var(--radius-pill);
+      font-size: 0.85rem; font-family: 'Cabinet Grotesk', sans-serif;
+      cursor: pointer; font-weight: 600; border: 1.5px solid transparent;
+      transition: all .2s; background: transparent; color: var(--muted);
+    }
+    .tab.active {
+      background: var(--surface); border-color: var(--border-hi);
+      color: var(--text); box-shadow: var(--card-shadow);
+    }
+    .tab.active[data-tab="search"] { border-color: rgba(200,82,26,.35); color: var(--accent); }
+    .tab.active[data-tab="tracker"] { border-color: rgba(26,122,110,.35); color: var(--teal); }
+
+    .tab-badge {
+      font-size: 0.68rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 1px 8px; border-radius: 20px; margin-left: 6px;
+      font-family: 'Cabinet Grotesk', sans-serif;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9998;
+      padding: 12px 20px; border-radius: 12px;
+      font-size: 0.85rem; font-weight: 600;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      transform: translateY(80px); opacity: 0;
+      transition: all .3s cubic-bezier(.34,1.56,.64,1);
+      pointer-events: none;
+      box-shadow: var(--card-shadow-hover);
+      font-family: 'Cabinet Grotesk', sans-serif;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.success { border-color: rgba(26,122,110,.4); color: var(--teal); }
+    #toast.error   { border-color: rgba(239,68,68,.4); color: #ef4444; }
+    #toast.info    { border-color: rgba(200,82,26,.35); color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="dash-nav">
+  <div class="dash-nav-inner">
+    <div class="dash-logo">
+      <span class="logo-wrap">
+        <svg class="logo-icon-svg" style="width:28px;height:28px;" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="17" fill="currentColor" opacity="0.15"/>
+          <path d="M18 11L27 15.5L18 20L9 15.5Z" fill="currentColor"/>
+          <path d="M13 17.5V23C13 24.1 15.2 25 18 25C20.8 25 23 24.1 23 23V17.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <line x1="27" y1="15.5" x2="27" y2="21.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="27" cy="23" r="1.8" fill="currentColor"/>
+        </svg>
+        <span class="logo-intern" style="font-size:1rem;">Intern</span><span class="logo-iq" style="font-size:1rem;">IQ</span>
+      </span>
+    </div>
+
+    <div class="nav-user" style="font-size:.82rem;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);padding:6px 14px;border-radius:20px;font-family:'Cabinet Grotesk',sans-serif;">
+      Logged in as <span id="navUsername" style="color:var(--accent);font-weight:700;">...</span>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+    <button class="btn-logout" onclick="logout()">Sign out</button>
+  </div>
+</nav>
+
+<!-- Main content -->
+<main style="flex:1;padding:32px 28px;max-width:1280px;width:100%;margin:0 auto;">
+
+  <!-- Search bar -->
+  <div class="search-wrap">
+    <input id="queryInput" type="text" placeholder="Search roles — e.g. java, frontend, data science…"/>
+    <select id="locationInput">
+      <option value="india">🇮🇳 India</option>
+      <option value="bangalore">Bangalore</option>
+      <option value="mumbai">Mumbai</option>
+      <option value="delhi">Delhi</option>
+      <option value="hyderabad">Hyderabad</option>
+      <option value="pune">Pune</option>
+      <option value="remote">Remote</option>
+    </select>
+    <button class="btn-search" id="searchBtn" onclick="searchInternships()">Search</button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="search" onclick="switchTab('search')">🔍 Discover</button>
+    <button class="tab" data-tab="tracker" onclick="switchTab('tracker')">
+      📋 My Applications
+      <span id="trackerCount" class="tab-badge">0</span>
+    </button>
+  </div>
+
+  <!-- DISCOVER TAB -->
+  <div id="tab-search">
+    <div class="section-header-row">
+      <div class="section-title-sm">
+        <span class="section-dot"></span> Internship Listings
+      </div>
+      <span id="listingsBadge" class="count-badge">0 results</span>
+    </div>
+    <div class="grid" id="listingsGrid">
+      <div class="state-empty">
+        <div class="icon">🚀</div>
+        <p>Search for internships above to get started</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACKER TAB -->
+  <div id="tab-tracker" style="display:none">
+    <div class="section-header-row">
+      <div class="section-title-sm">
+        <span class="section-dot" style="background:var(--teal);"></span> My Applications
+      </div>
+    </div>
+    <div class="grid" id="trackerGrid">
+      <div class="state-empty">
+        <div class="icon">📋</div>
+        <p>No applications tracked yet. Save internships from the Discover tab.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div id="toast"></div>
+
+<script>
+  const API = '';
+  let token = localStorage.getItem('interniq_token');
+  let trackedListingIds = new Set();
+
+  // ── Auth guard ──
+  if (!token) { window.location.href = '/login.html'; }
+  const user = JSON.parse(localStorage.getItem('interniq_user') || '{}');
+  document.getElementById('navUsername').textContent = user.username || user.name || 'User';
+
+  // ── Theme ──
+  const html = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const savedTheme = localStorage.getItem('interniq_theme') || 'light';
+  html.setAttribute('data-theme', savedTheme);
+  themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+  themeToggle.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('interniq_theme', next);
+    themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+  });
+
+  function logout() {
+    localStorage.removeItem('interniq_token');
+    localStorage.removeItem('interniq_user');
+    window.location.href = '/login.html';
+  }
+
+  // ── Tabs ──
+  function switchTab(tab) {
+    document.getElementById('tab-search').style.display  = tab === 'search'  ? '' : 'none';
+    document.getElementById('tab-tracker').style.display = tab === 'tracker' ? '' : 'none';
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    if (tab === 'tracker') loadTracker();
+  }
+
+  // ── Toast ──
+  function showToast(msg, type = 'info') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `show ${type}`;
+    setTimeout(() => { t.className = ''; }, 3000);
+  }
+
+  // ── Search ──
+  async function searchInternships() {
+    const query    = document.getElementById('queryInput').value.trim() || 'software intern';
+    const location = document.getElementById('locationInput').value;
+    const btn      = document.getElementById('searchBtn');
+    const grid     = document.getElementById('listingsGrid');
+
+    btn.disabled = true; btn.textContent = 'Searching…';
+    grid.innerHTML = renderSkeletons(6);
+
+    try {
+      const res = await fetch(
+        `${API}/api/v1/internships?query=${encodeURIComponent(query)}&location=${encodeURIComponent(location)}`,
+        { headers: { 'Authorization': 'Bearer ' + token } }
+      );
+      if (res.status === 401) { logout(); return; }
+      const data = await res.json();
+      const listings = Array.isArray(data) ? data : (data.listings || []);
+
+      document.getElementById('listingsBadge').textContent = listings.length + ' results';
+      grid.innerHTML = listings.length
+        ? listings.map(renderListingCard).join('')
+        : `<div class="state-empty"><div class="icon">😶</div><p>No results for "${query}" in ${location}. Try a different search.</p></div>`;
+    } catch(e) {
+      grid.innerHTML = `<div class="state-empty"><div class="icon">⚠️</div><p>Failed to fetch internships. Is the backend running?</p></div>`;
+    } finally {
+      btn.disabled = false; btn.textContent = 'Search';
+    }
+  }
+
+  // ── Render listing card ──
+  function renderListingCard(listing) {
+    const isSaved = trackedListingIds.has(listing.id);
+    const posted  = listing.postedAt
+      ? new Date(listing.postedAt).toLocaleDateString('en-IN', { day:'numeric', month:'short' })
+      : '';
+    return `
+      <div class="card" id="card-${listing.id}">
+        <div class="card-top">
+          <div class="card-company">${esc(listing.companyName || 'Unknown')}</div>
+          <div class="card-source">${listing.source || 'JOBS'}</div>
+        </div>
+        <div class="card-title">${esc(listing.jobTitle || 'Internship')}</div>
+        <div class="card-meta">
+          ${listing.location  ? `<span class="meta-chip">📍 ${esc(listing.location)}</span>`  : ''}
+          ${listing.jobType   ? `<span class="meta-chip">🕐 ${esc(listing.jobType)}</span>`   : ''}
+          ${listing.salary    ? `<span class="meta-chip">💰 ${esc(listing.salary)}</span>`    : ''}
+          ${posted            ? `<span class="meta-chip">📅 ${posted}</span>`                 : ''}
+        </div>
+        ${listing.description ? `<div class="card-desc">${esc(listing.description)}</div>` : ''}
+        <div class="card-actions">
+          <button class="btn-apply-card" onclick="applyNow('${esc(listing.applyUrl || '')}')">
+            Apply Now ↗
+          </button>
+          <button
+            class="btn-save ${isSaved ? 'saved' : ''}"
+            id="save-btn-${listing.id}"
+            onclick="saveToTracker(${listing.id}, this)"
+            ${isSaved ? 'disabled' : ''}>
+            ${isSaved ? '✓ Saved' : '+ Save'}
+          </button>
+        </div>
+      </div>`;
+  }
+
+  function applyNow(url) {
+    if (!url || url === 'null' || url === 'undefined') {
+      showToast('No apply link available for this listing.', 'error'); return;
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  // ── Save to Tracker ──
+  async function saveToTracker(listingId, btn) {
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      const res = await fetch(`${API}/api/v1/applications`, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ listingId, status: 'SAVED' })
+      });
+      if (res.status === 409) {
+        showToast('Already in your tracker!', 'info');
+        btn.textContent = '✓ Saved'; btn.classList.add('saved');
+        trackedListingIds.add(listingId); return;
+      }
+      if (!res.ok) throw new Error();
+      btn.textContent = '✓ Saved'; btn.classList.add('saved');
+      trackedListingIds.add(listingId);
+      updateTrackerCount(+1);
+      showToast('Saved to your tracker!', 'success');
+    } catch(e) {
+      btn.disabled = false; btn.textContent = '+ Save';
+      showToast('Failed to save. Please try again.', 'error');
+    }
+  }
+
+  // ── Load Tracker ──
+  async function loadTracker() {
+    const grid = document.getElementById('trackerGrid');
+    grid.innerHTML = renderSkeletons(3);
+    try {
+      const res = await fetch(`${API}/api/v1/applications`, { headers: { 'Authorization': 'Bearer ' + token } });
+      if (res.status === 401) { logout(); return; }
+      const apps = await res.json();
+      trackedListingIds = new Set(apps.map(a => a.listingId));
+      document.getElementById('trackerCount').textContent = apps.length;
+      grid.innerHTML = apps.length
+        ? apps.map(renderTrackerCard).join('')
+        : `<div class="state-empty"><div class="icon">📋</div><p>No applications tracked yet. Save internships from the Discover tab.</p></div>`;
+    } catch(e) {
+      grid.innerHTML = `<div class="state-empty"><div class="icon">⚠️</div><p>Could not load tracker. Is the backend running?</p></div>`;
+    }
+  }
+
+  // ── Render tracker card ──
+  function renderTrackerCard(app) {
+    const statuses = ['SAVED','APPLIED','INTERVIEW','OFFER','REJECTED'];
+    const options  = statuses.map(s =>
+      `<option value="${s}" ${app.status === s ? 'selected' : ''}>${s}</option>`
+    ).join('');
+    const date = app.appliedAt
+      ? new Date(app.appliedAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+      : '';
+    return `
+      <div class="tracker-card" id="tracker-${app.id}">
+        <div class="tracker-top">
+          <div>
+            <div class="tracker-company">${esc(app.companyName || 'Unknown')}</div>
+            <div class="tracker-title">${esc(app.jobTitle || 'Internship')}</div>
+          </div>
+          <select class="status-select status-${app.status}" onchange="updateStatus(${app.id}, this)">
+            ${options}
+          </select>
+        </div>
+        ${app.notes ? `<div style="font-size:.78rem;color:var(--muted);line-height:1.4;">${esc(app.notes)}</div>` : ''}
+        <div class="tracker-footer">
+          <span class="tracker-date">${date ? 'Saved ' + date : ''}</span>
+          <div style="display:flex;gap:4px;align-items:center;">
+            ${app.applyUrl ? `<a class="btn-open-link" href="${esc(app.applyUrl)}" target="_blank" rel="noopener">Apply ↗</a>` : ''}
+            <button class="btn-delete" onclick="deleteApplication(${app.id})">Remove</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ── Update status ──
+  async function updateStatus(appId, selectEl) {
+    const newStatus = selectEl.value;
+    selectEl.className = `status-select status-${newStatus}`;
+    try {
+      const res = await fetch(`${API}/api/v1/applications/${appId}`, {
+        method: 'PATCH',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      if (!res.ok) throw new Error();
+      showToast(`Status updated to ${newStatus}`, 'success');
+    } catch(e) {
+      showToast('Failed to update status.', 'error');
+    }
+  }
+
+  // ── Delete application ──
+  async function deleteApplication(appId) {
+    if (!confirm('Remove this application from your tracker?')) return;
+    try {
+      const res = await fetch(`${API}/api/v1/applications/${appId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) throw new Error();
+      document.getElementById(`tracker-${appId}`)?.remove();
+      updateTrackerCount(-1);
+      showToast('Removed from tracker.', 'info');
+      if (document.getElementById('trackerGrid').children.length === 0) {
+        document.getElementById('trackerGrid').innerHTML =
+          `<div class="state-empty"><div class="icon">📋</div><p>No applications tracked yet.</p></div>`;
+      }
+    } catch(e) {
+      showToast('Failed to remove. Please try again.', 'error');
+    }
+  }
+
+  // ── Helpers ──
+  function updateTrackerCount(delta) {
+    const el = document.getElementById('trackerCount');
+    el.textContent = Math.max(0, parseInt(el.textContent || '0') + delta);
+  }
+
+  function esc(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function renderSkeletons(n) {
+    return Array.from({length: n}, () => `
+      <div class="card" style="gap:14px;">
+        <div class="skeleton" style="width:40%;height:10px;"></div>
+        <div class="skeleton" style="width:80%;height:16px;"></div>
+        <div class="skeleton" style="width:60%;height:10px;"></div>
+        <div class="skeleton" style="width:100%;height:10px;"></div>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <div class="skeleton" style="flex:1;height:34px;border-radius:50px;"></div>
+          <div class="skeleton" style="width:80px;height:34px;border-radius:50px;"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  // ── Load tracker count on page load ──
+  (async () => {
+    try {
+      const res = await fetch(`${API}/api/v1/applications`, { headers: { 'Authorization': 'Bearer ' + token } });
+      if (res.ok) {
+        const apps = await res.json();
+        document.getElementById('trackerCount').textContent = apps.length;
+        trackedListingIds = new Set(apps.map(a => a.listingId));
+      }
+    } catch(e) {}
+  })();
+
+  // ── Enter key search ──
+  document.getElementById('queryInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') searchInternships();
+  });
+</script>
+</body>
+</html>
