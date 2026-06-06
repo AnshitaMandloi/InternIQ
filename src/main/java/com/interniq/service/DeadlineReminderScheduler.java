@@ -52,7 +52,7 @@ public class DeadlineReminderScheduler {
 
     // ── 48-hour reminder — runs every hour at :00 ──────────────────────────
 
-  @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 * * * *")
     @Transactional
     public void send48HourReminders() {
 	  LocalDateTime now = LocalDateTime.now();
@@ -75,7 +75,7 @@ public class DeadlineReminderScheduler {
 
     // ── 24-hour reminder — runs every hour at :00 ──────────────────────────
 
-    @Scheduled(cron = "0 * * * * *")
+  @Scheduled(cron = "0 0 * * * *")
     @Transactional
     public void send24HourReminders() {
     	LocalDateTime now = LocalDateTime.now();
