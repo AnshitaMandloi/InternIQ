@@ -55,7 +55,7 @@ public class DeadlineReminderScheduler {
   @Scheduled(cron = "0 * * * * *")
     @Transactional
     public void send48HourReminders() {
-        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+	  LocalDateTime now = LocalDateTime.now();
         LocalDateTime target = now.plusHours(48);
 
         List<Application> upcoming = applicationRepository.findApplicationsWithDeadlineBetween(
@@ -78,7 +78,7 @@ public class DeadlineReminderScheduler {
     @Scheduled(cron = "0 * * * * *")
     @Transactional
     public void send24HourReminders() {
-        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+    	LocalDateTime now = LocalDateTime.now();
         LocalDateTime target = now.plusHours(24);
 
         List<Application> upcoming = applicationRepository.findApplicationsWithDeadlineBetween(
