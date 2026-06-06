@@ -1,4 +1,4 @@
-﻿package com.interniq.service;
+package com.interniq.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
