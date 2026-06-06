@@ -1,0 +1,11 @@
+.git
+.github
+.gitignore
+.classpath
+.factorypath
+.project
+.settings/
+target/
+*.md
+*.iml
+**/*.log
