@@ -164,8 +164,11 @@
 						<configuration>
 							<annotationProcessorPaths>
 								<path>
-									<groupId>org.projectlombok</groupId>
-									<artifactId>lombok</artifactId>
+									<path>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.30</version>
+</path>
 								</path>
 							</annotationProcessorPaths>
 						</configuration>
@@ -179,8 +182,11 @@
 						<configuration>
 							<annotationProcessorPaths>
 								<path>
-									<groupId>org.projectlombok</groupId>
-									<artifactId>lombok</artifactId>
+									<path>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.30</version>
+</path>
 								</path>
 							</annotationProcessorPaths>
 						</configuration>
