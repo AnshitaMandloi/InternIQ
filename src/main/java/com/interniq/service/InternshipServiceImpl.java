@@ -72,6 +72,11 @@ public class InternshipServiceImpl implements InternshipService {
         return listings.stream().map(this::toResponse).toList();
     }
 
+    // Truncate helper -- prevents DB column overflow
+    private String truncate(String value, int maxLength) {
+        return value != null && value.length() > maxLength ? value.substring(0, maxLength) : value;
+    }
+
     // Parse SerpAPI Google Jobs response and save to DB
     private List<InternshipResponse> parseAndSave(String json) {
         List<InternshipResponse> results = new ArrayList<>();
@@ -84,12 +89,13 @@ public class InternshipServiceImpl implements InternshipService {
 
             for (JsonNode job : jobs) {
 
-                // Unique ID
+                // Unique ID -- truncated to 700 chars (SerpAPI job_id is a long base64 blob)
                 String externalId = job.path("job_id").asText();
                 if (externalId == null || externalId.isBlank()) {
                     externalId = job.path("title").asText()
                             + "_" + job.path("company_name").asText();
                 }
+                externalId = truncate(externalId, 700);
 
                 // Already cached? Return from DB
                 if (listingRepository.existsByExternalId(externalId)) {

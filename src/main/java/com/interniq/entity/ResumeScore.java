@@ -1,106 +1,88 @@
 package com.interniq.entity;
 
-
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "resume_scores")
-
 public class ResumeScore {
 
-   public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-	public User getUser() {
-		return user;
-	}
+    @Column(name = "job_description", columnDefinition = "TEXT", nullable = false)
+    private String jobDescription;
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    private Integer score;
 
-	public String getJobDescription() {
-		return jobDescription;
-	}
+    @Column(name = "matched_skills", columnDefinition = "TEXT")
+    private String matchedSkills;
 
-	public void setJobDescription(String jobDescription) {
-		this.jobDescription = jobDescription;
-	}
+    @Column(name = "missing_skills", columnDefinition = "TEXT")
+    private String missingSkills;
 
-	public Integer getScore() {
-		return score;
-	}
+    @Column(columnDefinition = "TEXT")
+    private String suggestions;
 
-	public void setScore(Integer score) {
-		this.score = score;
-	}
+    // ── New fields added via V6 migration ──────────────────────────
 
-	public String getMatchedSkills() {
-		return matchedSkills;
-	}
+    // Full parsed resume text (MEDIUMTEXT supports large resumes)
+    @Column(name = "resume_text", columnDefinition = "MEDIUMTEXT")
+    private String resumeText;
 
-	public void setMatchedSkills(String matchedSkills) {
-		this.matchedSkills = matchedSkills;
-	}
+    // Full JSON feedback from OpenAI for section-wise display
+    @Column(name = "feedback_json", columnDefinition = "TEXT")
+    private String feedbackJson;
 
-	public String getMissingSkills() {
-		return missingSkills;
-	}
+    // Original uploaded filename for display
+    @Column(name = "file_name")
+    private String fileName;
 
-	public void setMissingSkills(String missingSkills) {
-		this.missingSkills = missingSkills;
-	}
+    @Column(name = "generated_at")
+    private LocalDateTime generatedAt;
 
-	public String getSuggestions() {
-		return suggestions;
-	}
+    @PrePersist
+    protected void onCreate() {
+        generatedAt = LocalDateTime.now();
+    }
 
-	public void setSuggestions(String suggestions) {
-		this.suggestions = suggestions;
-	}
+    // ── Getters & Setters ──────────────────────────────────────────
 
-	public LocalDateTime getGeneratedAt() {
-		return generatedAt;
-	}
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-	public void setGeneratedAt(LocalDateTime generatedAt) {
-		this.generatedAt = generatedAt;
-	}
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
-@Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
+    public String getJobDescription() { return jobDescription; }
+    public void setJobDescription(String jobDescription) { this.jobDescription = jobDescription; }
 
-   @ManyToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name = "user_id", nullable = false)
-   private User user;
+    public Integer getScore() { return score; }
+    public void setScore(Integer score) { this.score = score; }
 
-   @Column(name = "job_description", columnDefinition = "TEXT", nullable = false)
-   private String jobDescription;
+    public String getMatchedSkills() { return matchedSkills; }
+    public void setMatchedSkills(String matchedSkills) { this.matchedSkills = matchedSkills; }
 
-   private Integer score;
+    public String getMissingSkills() { return missingSkills; }
+    public void setMissingSkills(String missingSkills) { this.missingSkills = missingSkills; }
 
-   @Column(name = "matched_skills", columnDefinition = "TEXT")
-   private String matchedSkills;
+    public String getSuggestions() { return suggestions; }
+    public void setSuggestions(String suggestions) { this.suggestions = suggestions; }
 
-   @Column(name = "missing_skills", columnDefinition = "TEXT")
-   private String missingSkills;
+    public String getResumeText() { return resumeText; }
+    public void setResumeText(String resumeText) { this.resumeText = resumeText; }
 
-   @Column(columnDefinition = "TEXT")
-   private String suggestions;
+    public String getFeedbackJson() { return feedbackJson; }
+    public void setFeedbackJson(String feedbackJson) { this.feedbackJson = feedbackJson; }
 
-   @Column(name = "generated_at")
-   private LocalDateTime generatedAt;
+    public String getFileName() { return fileName; }
+    public void setFileName(String fileName) { this.fileName = fileName; }
 
-   @PrePersist
-   protected void onCreate() {
-       generatedAt = LocalDateTime.now();
-   }
+    public LocalDateTime getGeneratedAt() { return generatedAt; }
+    public void setGeneratedAt(LocalDateTime generatedAt) { this.generatedAt = generatedAt; }
 }

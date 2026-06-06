@@ -115,6 +115,26 @@
     <artifactId>spring-boot-starter-test</artifactId>
     <scope>test</scope>
 </dependency>
+
+ <!-- Apache PDFBox — PDF text extraction -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+ 
+        <!-- Apache POI — DOCX/DOC text extraction -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.5</version>
+        </dependency>
+ 
+        <!-- Jackson JSR310 — LocalDateTime serialization (already fixed in AppConfig but needed on classpath) -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>
