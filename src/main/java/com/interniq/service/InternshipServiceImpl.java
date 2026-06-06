@@ -90,12 +90,11 @@ public class InternshipServiceImpl implements InternshipService {
             for (JsonNode job : jobs) {
 
                 // Unique ID -- truncated to 700 chars (SerpAPI job_id is a long base64 blob)
-                String externalId = job.path("job_id").asText();
-                if (externalId == null || externalId.isBlank()) {
-                    externalId = job.path("title").asText()
-                            + "_" + job.path("company_name").asText();
-                }
-                externalId = truncate(externalId, 1000);
+            	String rawId = job.path("job_id").asText();
+            	if (rawId == null || rawId.isBlank()) {
+            	    rawId = job.path("title").asText() + "_" + job.path("company_name").asText();
+            	}
+            	String externalId = Integer.toHexString(rawId.hashCode());
 
                 // Already cached? Return from DB
                 if (listingRepository.existsByExternalId(externalId)) {
