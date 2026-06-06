@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -51,10 +52,10 @@ public class DeadlineReminderScheduler {
 
     // ── 48-hour reminder — runs every hour at :00 ──────────────────────────
 
-    @Scheduled(cron = "0 0 * * * *")
+  @Scheduled(cron = "0 * * * * *")
     @Transactional
     public void send48HourReminders() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
         LocalDateTime target = now.plusHours(48);
 
         List<Application> upcoming = applicationRepository.findApplicationsWithDeadlineBetween(
@@ -74,10 +75,10 @@ public class DeadlineReminderScheduler {
 
     // ── 24-hour reminder — runs every hour at :00 ──────────────────────────
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     @Transactional
     public void send24HourReminders() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
         LocalDateTime target = now.plusHours(24);
 
         List<Application> upcoming = applicationRepository.findApplicationsWithDeadlineBetween(
