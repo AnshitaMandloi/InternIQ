@@ -163,13 +163,12 @@
 						</goals>
 						<configuration>
 							<annotationProcessorPaths>
-								<path>
-									<path>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <version>1.18.30</version>
-</path>
-								</path>
+								
+									 <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.30</version>
+    </dependency>
 							</annotationProcessorPaths>
 						</configuration>
 					</execution>
@@ -181,13 +180,11 @@
 						</goals>
 						<configuration>
 							<annotationProcessorPaths>
-								<path>
-									<path>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <version>1.18.30</version>
-</path>
-								</path>
+								 <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.30</version>
+    </dependency>
 							</annotationProcessorPaths>
 						</configuration>
 					</execution>
