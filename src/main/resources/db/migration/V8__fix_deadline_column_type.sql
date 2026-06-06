@@ -1,0 +1,2 @@
+ALTER TABLE applications 
+MODIFY COLUMN deadline DATETIME(6) NULL;
