@@ -95,7 +95,7 @@ public class InternshipServiceImpl implements InternshipService {
                     externalId = job.path("title").asText()
                             + "_" + job.path("company_name").asText();
                 }
-                externalId = truncate(externalId, 700);
+                externalId = truncate(externalId, 1000);
 
                 // Already cached? Return from DB
                 if (listingRepository.existsByExternalId(externalId)) {
